@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   ms2-estudiantes-matriculas:
     build:
@@ -15,28 +17,9 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - SERVER_PORT=${SERVER_PORT}
-    depends_on:
-      - mysql
-    networks:
-      - educativa-network
-
-  mysql:
-    image: mysql:8
-    container_name: mysql_db
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: utec
-      MYSQL_DATABASE: demomysql
-    ports:
-      - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
     networks:
       - educativa-network
 
 networks:
   educativa-network:
     driver: bridge
-
-volumes:
-  mysql_data:
