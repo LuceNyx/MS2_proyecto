@@ -1,27 +1,4 @@
-version: '3.8'
-
 services:
-  # Servicio MySQL
-  mysql:
-    image: mysql:8
-    container_name: mysql_db
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: utec
-      MYSQL_DATABASE: demomysql
-    ports:
-      - "3307:3306"  # host:container
-    volumes:
-      - mysql_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -putec || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - educativa-network
-
-  # Microservicio MS2
   ms2-estudiantes-matriculas:
     build:
       context: .
@@ -31,10 +8,29 @@ services:
       - "8082:8082"
     env_file:
       - .env
-    restart: unless-stopped
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SERVER_PORT=${SERVER_PORT}
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
+    networks:
+      - educativa-network
+
+  mysql:
+    image: mysql:8
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: utec
+      MYSQL_DATABASE: demomysql
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
     networks:
       - educativa-network
 
