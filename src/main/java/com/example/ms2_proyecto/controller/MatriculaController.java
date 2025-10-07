@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/api/matriculas")
+@RequestMapping("/ms2/api/matriculas")
 @Tag(name = "Matrículas", description = "API para gestión de matrículas")
 @CrossOrigin(origins = "*")
 public class MatriculaController {
